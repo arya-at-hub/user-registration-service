@@ -1,0 +1,18 @@
+
+#virtual environment
+.venv/
+
+
+#environment variables
+.env
+
+
+#IDE
+.idea/
+
+
+#python
+.__pycache__/
+
+
+.servies/
