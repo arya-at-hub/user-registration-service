@@ -38,16 +38,14 @@
 from sqlalchemy import create_engine, text
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import declarative_base, sessionmaker
+from app.config import DATABASE_URL
 
 
-engine = create_engine("mysql+pymysql://root:@localhost:3306/projectone")
+engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False)
 
 def db_connection():
     try:
-        # with engine.connect() as connection:
-        #     result = connection.execute(text("SELECT DATABASE();"))
-        #     print("Connected to:", result.scalar())
         conn = engine.connect()
         print("DB connected successfully.")
         return conn
