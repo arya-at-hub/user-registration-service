@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends
 from app.schemas.user import UserSignup, UserLogin, UserUpdate
 from app.functions.db import get_db
-from app.functions.auth import hash_password, verify_password, create_access_token, get_current_user
+from app.functions.auth_utils import hash_password, verify_password, create_access_token, get_current_user
 from sqlalchemy.orm import Session
 from app.models.user import User
 
@@ -21,7 +21,7 @@ def signup(user_data: UserSignup, db: Session = Depends(get_db)):
         (User.email == user_data.email)).first()
     
     if existing_user:
-        return {"message":"Username or Email already exists!"}
+        raise HTTPException(status_code=401, detail="Username or Email already exists!")
     
     user_dict = user_data.model_dump()
     user_dict['password'] = hashed_pwd
@@ -31,7 +31,7 @@ def signup(user_data: UserSignup, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(new_user)
     
-    return {"message": f"Welcome {user_data.username}"}
+    return {"status_code":200, "message": f"Welcome {user_data.username}"}
     
 
 @router.post("/login")
@@ -48,7 +48,8 @@ def login(user_data: UserLogin, db: Session = Depends(get_db)):
          raise HTTPException(status_code=401, detail="Invalid credentials.")
     
     token = create_access_token({"sub": str(user.id)})
-    return {"message": f"User {user_data.email} logged in successfully.",
+    return {"status_code":200,
+            "message": f"User {user_data.email} logged in successfully.",
             "access_token": token,
             "token_type": "bearer"}
 
@@ -61,7 +62,7 @@ def user_update(user_id: int, user_data: UserUpdate, db: Session = Depends(get_d
         (User.id == user_id)).first()
     
     if not existing_user:
-        return {"message":"User does not exist!"}
+        raise HTTPException(status_code=401, detail="User does not exist!")
     
     user_dict = user_data.model_dump(exclude_unset=True)
     
@@ -71,5 +72,9 @@ def user_update(user_id: int, user_data: UserUpdate, db: Session = Depends(get_d
     db.commit()
     db.refresh(existing_user)
     
-    return {"message": "Details Updated",
+    return {"status_code":200,
+            "message": "Details Updated",
             "details": existing_user}
+
+
+

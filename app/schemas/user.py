@@ -38,3 +38,12 @@ class UserUpdate(BaseModel):
     gender: Optional[str] = None
     address: Optional[str] = None
     profile_photo: Optional[str] = None
+
+
+class PasswordOTP(BaseModel):
+    email: EmailStr
+    otp: Optional[str] = None
+
+class PAsswordReset(BaseModel):
+    email: EmailStr
+    password: str
