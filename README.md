@@ -1,15 +1,20 @@
 # FastAPI User Service 
-A microservice for user authentication, registration, and profile updates using FastAPI, SQLAlchemy, JWT, and Pydantic.
+A simple microservice for **user authentication, registration, and profile management** using:  
+- **FastAPI** (for APIs)  
+- **SQLAlchemy** (for database handling)  
+- **JWT** (for secure authentication)  
+- **Pydantic** (for validation)  
 
-## Features
+# Features
 - User Registration
-- User Login with JWT
-- Profile Update
+- User Login with JWT authentication
 - Secure Password Hashing
+- Profile Update (with validation)
 
 
 
 # To Activate the Virtual Environment
+Run Command
 - .venv\Scripts\activate  
 
 
@@ -24,4 +29,5 @@ Run Command
 
 
 # To run the Project
+Run Command
 - uvicorn app.main:app --reload
